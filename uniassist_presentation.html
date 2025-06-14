@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniAssist - Студентски Асистент</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow: hidden;
+        }
+
+        .presentation-container {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .slide {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 60px;
+            max-width: 900px;
+            width: 90%;
+            min-height: 600px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            display: none;
+            animation: slideIn 0.6s ease-out;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-size: 2.8em;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+
+        h2 {
+            color: #34495e;
+            font-size: 2.2em;
+            margin-bottom: 30px;
+            font-weight: 400;
+        }
+
+        h3 {
+            color: #3498db;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .emoji {
+            font-size: 4em;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .content {
+            font-size: 1.2em;
+            line-height: 1.8;
+            color: #2c3e50;
+            text-align: left;
+            margin: 0 auto;
+            max-width: 700px;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #a8edea 0%, #fed6e3 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .tech-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #3498db;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-btn:hover {
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .slide-counter {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: 500;
+            color: #2c3e50;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .feature-list li {
+            background: #f8f9fa;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #e74c3c;
+            display: flex;
+            align-items: center;
+        }
+
+        .feature-list li::before {
+            content: '✓';
+            color: #27ae60;
+            font-weight: bold;
+            margin-right: 15px;
+            font-size: 1.2em;
+        }
+
+        .author-info {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        .database-schema {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .table-card {
+            background: #ecf0f1;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            border-top: 4px solid #9b59b6;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="slide-counter">
+            <span id="current-slide">1</span> / <span id="total-slides">10</span>
+        </div>
+
+        <!-- Слайд 1: Заглавие -->
+        <div class="slide active">
+            <span class="emoji">🎓</span>
+            <h1>UniAssist</h1>
+            <h3>Студентски Асистент</h3>
+            <div class="author-info">
+                <h3>Университетски проект по Python</h3>
+                <p style="font-size: 1.3em; margin-top: 15px;">
+                    <strong>Димитър Клянев</strong><br>
+                    F112194<br>
+                    2025 година
+                </p>
+            </div>
+        </div>
+
+        <!-- Слайд 2: Цели и обхват -->
+        <div class="slide">
+            <span class="emoji">🎯</span>
+            <h2>Цели и обхват</h2>
+            <div class="content">
+                <h3>Основни цели:</h3>
+                <ul class="feature-list">
+                    <li>Създаване на практичен студентски асистент</li>
+                    <li>GUI програмиране с wxPython</li>
+                    <li>Работа с SQLite база данни</li>
+                    <li>Интеграция с AI технологии</li>
+                    <li>Модулна архитектура</li>
+                    <li>Готов за употреба продукт</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Слайд 3: Функционалност -->
+        <div class="slide">
+            <span class="emoji">⚙️</span>
+            <h2>Функционалност</h2>
+            <div class="content">
+                <ul class="feature-list">
+                    <li>🏠 Начална страница със статистики</li>
+                    <li>💬 AI чат с Ollama модели</li>
+                    <li>📝 Система за бележки</li>
+                    <li>🍅 Pomodoro таймер</li>
+                    <li>📅 Календар</li>
+                    <li>📊 Управление на оценки</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Слайд 4: Използвани технологии -->
+        <div class="slide">
+            <span class="emoji">🛠️</span>
+            <h2>Използвани технологии</h2>
+            <div class="tech-grid">
+                <div class="tech-item">
+                    <strong>Python</strong><br>
+                    Основен език
+                </div>
+                <div class="tech-item">
+                    <strong>wxPython</strong><br>
+                    GUI библиотека
+                </div>
+                <div class="tech-item">
+                    <strong>SQLite</strong><br>
+                    Вградена база данни
+                </div>
+                <div class="tech-item">
+                    <strong>Ollama</strong><br>
+                    Локални AI модели
+                </div>
+                <div class="tech-item">
+                    <strong>requests</strong><br>
+                    HTTP комуникация
+                </div>
+                <div class="tech-item">
+                    <strong>threading</strong><br>
+                    Многонишковост
+                </div>
+                <div class="tech-item">
+                    <strong>datetime</strong><br>
+                    Работа с време
+                </div>
+            </div>
+        </div>
+
+        <!-- Слайд 5: Архитектура -->
+        <div class="slide">
+            <span class="emoji">🏗️</span>
+            <h2>Архитектура</h2>
+            <div class="content">
+                <h3>Модулна структура:</h3>
+                <ul class="feature-list">
+                    <li><strong>main.py</strong> - GUI и логика</li>
+                    <li><strong>database.py</strong> - SQLite CRUD операции</li>
+                    <li><strong>ollama.py</strong> - AI чат клиент</li>
+                    <li><strong>pomodoro.py</strong> - работен таймер</li>
+                    <li><strong>events.py</strong> - календар</li>
+                    <li><strong>grades.py</strong> - система за оценки</li>
+                    <li><strong>assistant.db</strong> - SQLite база данни</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Слайд 6: База данни -->
+        <div class="slide">
+            <span class="emoji">🗄️</span>
+            <h2>База данни</h2>
+            <div class="content">
+                <h3>SQLite таблици:</h3>
+                <div class="database-schema">
+                    <div class="table-card">
+                        <strong>📝 notes</strong><br>
+                        бележки
+                    </div>
+                    <div class="table-card">
+                        <strong>🍅 pomodoro_sessions</strong><br>
+                        работни сесии
+                    </div>
+                    <div class="table-card">
+                        <strong>📅 events</strong><br>
+                        календарни събития
+                    </div>
+                    <div class="table-card">
+                        <strong>📊 subjects</strong><br>
+                        учебни предмети
+                    </div>
+                    <div class="table-card">
+                        <strong>🎯 grades</strong><br>
+                        оценки по предмети
+                    </div>
+                </div>
+                <div class="highlight">
+                    <strong>CRUD операции за всички таблици</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- Слайд 7: GUI интерфейс -->
+        <div class="slide">
+            <span class="emoji">🖥️</span>
+            <h2>wxPython интерфейс</h2>
+            <div class="content">
+                <ul class="feature-list">
+                    <li>Начална страница със статистики</li>
+                    <li>AI чат с избор на модели</li>
+                    <li>Управление на бележки</li>
+                    <li>Pomodoro таймер с визуализация</li>
+                    <li>Календар</li>
+                    <li>Система за проследяване на оценки</li>
+                    <li>Въвеждане на данни</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Слайд 8: AI интеграция -->
+        <div class="slide">
+            <span class="emoji">🤖</span>
+            <h2>AI интеграция</h2>
+            <div class="content">
+                <div class="highlight">
+                    <h3>Ollama LLM поддръжка:</h3>
+                    <ul class="feature-list">
+                        <li>Локална обработка</li>
+                        <li>Многонишков чат</li>
+                        <li>Без облачни зависимости</li>
+                    </ul>
+                </div>
+                <p style="text-align: center; font-size: 1.1em; margin-top: 20px;">
+                    <strong>OpenAI API съвместимост</strong>
+                </p>
+            </div>
+        </div>
+
+        <!-- Слайд 9: Резултат -->
+        <div class="slide">
+            <span class="emoji">✅</span>
+            <h2>Резултат</h2>
+            <div class="content">
+                <div class="highlight" style="text-align: center; font-size: 1.5em;">
+                    <strong>Функциониращ продукт</strong>
+                </div>
+                <p style="text-align: center; font-size: 1.2em; margin-top: 30px;">
+                    Създаден е пълнофункционален студентски асистент, който може да се използва в реални условия.
+                </p>
+            </div>
+        </div>
+
+        <!-- Слайд 10: Заключение -->
+        <div class="slide">
+            <span class="emoji">🎉</span>
+            <h2>Заключение</h2>
+            <div class="content">
+                <h3>Постигнати цели:</h3>
+                <ul class="feature-list">
+                    <li>Функционален студентски асистент</li>
+                    <li>Модулна Python архитектура</li>
+                    <li>GUI интерфейс</li>
+                    <li>Интеграция с AI технологии</li>
+                    <li>Локална база данни</li>
+                    <li>Готов за практическа употреба</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="navigation">
+        <button class="nav-btn" id="prev-btn" onclick="prevSlide()">← Предишен</button>
+        <button class="nav-btn" id="next-btn" onclick="nextSlide()">Следващ →</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        document.getElementById('total-slides').textContent = totalSlides;
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            
+            document.getElementById('current-slide').textContent = currentSlide + 1;
+            
+            // Update navigation buttons
+            document.getElementById('prev-btn').disabled = currentSlide === 0;
+            document.getElementById('next-btn').disabled = currentSlide === totalSlides - 1;
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                showSlide(currentSlide + 1);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                showSlide(currentSlide - 1);
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                prevSlide();
+            }
+        });
+
+        // Initialize
+        showSlide(0);
+    </script>
+</body>
+</html>
